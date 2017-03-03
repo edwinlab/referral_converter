@@ -4,33 +4,80 @@
       <div class='col-md-6'>
         <div class='search-box'>
           <div class="form-group typeahead">
-            <input type="text" class="form-control typeahead-input" id="addFilter" placeholder="https://widget.co">
-            <div class="typeahead-dropdown list-group">
-              <a href="#" class="list-group-item">https://widget.co <small class="text-muted">index.html</small></a>
-              <a href="#" class="list-group-item">https://widget.co  <small class="text-muted">page2.html</small></a>
-              <a href="#" class="list-group-item">https://widget.co  <small class="text-muted">some_dir/page3.html</small></a>
+            <input type="text" class="form-control typeahead-input" id="showList" placeholder="https://widget.co">
+            <div id="list" class="typeahead-dropdown list-group">
             </div>
           </div>
         </div>
       </div>
       <div class="col-md-1">
-        <button class='btn btn-link reload-btn' data-container="body" data-toggle="popover" data-placement="bottom" data-content="Convert all html page to referall link.">
+        <button id="reload" onclick="referallApp.reloadPath()" class='btn btn-link reload-btn' data-container="body" data-toggle="popover" data-placement="bottom" data-content="Convert all html page to referall link.">
           <i class='glyphicon glyphicon-refresh'></i>
         </button>
       </div>
     </div>
   </div>
 </nav>
-<div class="container">
-  <p>Welcome To Widget Co.</p>
-  <p>We've teamed up with <a href="http://acme.test/">http://acme.test/</a> to provide you the best toys on earth. Be sure to check out Acme Inc's <a href="http://acme.test/space_rocket">Space Rocket</a>.</p>
-  <p>Lorem ipsum dolor sit amet, nonumes voluptatum mel ea, cu case ceteros cum. Novum commodo malorum vix ut. Dolores consequuntur in ius, sale electram dissentiunt quo te. Cu duo omnes invidunt, eos eu mucius fabellas. Stet facilis ius te, quando voluptatibus eos in. Ad vix mundi alterum, integre urbanitas intellegam vix in.</p>
-  <p>Eum facete intellegat ei, ut mazim melius usu. Has elit simul primis ne, regione minimum id cum. Sea deleniti dissentiet ea. Illud mollis moderatius ut per, at qui ubique populo. Eum ad cibo legimus, vim ei quidam fastidii.</p>
-  <!-- <a href="http://acme.test/beta_page_projects.php?id=furry">http://acme.test Beta page</a> -->
-  <p>Quo debet vivendo ex. Qui ut admodum senserit partiendo. Id adipiscing disputando eam, sea id magna pertinax concludaturque. Ex ignota epicurei quo, his ex doctus delenit fabellas, <a href="http://acme.com/categories?id=5">erat timeam cotidieque</a> sit in. Vel eu soleat voluptatibus, cum cu exerci mediocritatem. Malis legere at per, has brute putant animal et, in consul utamur usu.</p>
-  <p>Te has amet modo perfecto, te eum mucius <a href="http://acme.test/projects.php?id=furry">conclusionemque</a>, mel te erat deterruisset. Duo ceteros phaedrum id, ornatus postulant in sea. His at autem inani volutpat. Tollit possit in pri, platonem persecuti ad vix, vel nisl albucius gloriatur no.</p>
-  <!-- http://acme.test/old_page -->
-  <p>Ea duo atqui incorrupte, sed rebum regione suscipit ex, mea ex dicant percipit referrentur. Dicat luptatum constituam vix ut. His vide platonem omittantur id, vel quis vocent an. Ad pro inani zril omnesque. Mollis <a href="https://acme.test/check_out.jsp">forensibus</a> sea an, vim habeo adipisci contentiones ad, tale autem graecis ne sit.</p>
-  <p><a href="http://acme.test/partners/">http://acme.test/ Partners</a> to provide you the best toys on earth. Be sure to check out Acme Inc's <a href="http://acme.test/space_rocket">Space Rocket</a>.</p>
-  <p>Quo debet vivendo ex. Qui ut admodum senserit partiendo. Id adipiscing disputando eam, sea id magna pertinax concludaturque. Ex ignota epicurei quo, his ex doctus delenit fabellas, <a href="http://acme.test/categories?id=5">erat timeam cotidieque</a> sit in. Vel eu soleat voluptatibus, cum cu exerci mediocritatem. Malis legere at per, has brute putant animal et, in consul utamur usu.</p>
+<div id="frame" class="container">
 </div>
+
+<% content_for :js_source do %>
+<script type="text/javascript">
+  var referallApp = (function() {
+    var list = $('#list'),
+    showList = $('#showList'),
+    reload = $('#reload'),
+    frame = $('#frame');
+
+    var init = function() {
+      $.ajax({
+        type: 'GET',
+        url: "/ajax/folders",
+        success:function(data){
+          var list_path = '';
+          $.each(data.results , function(i, path) {
+            var filename = path.replace(/^.*[\\\/]/, '')
+            list_path += '<a href="javascript:void(0)" data-href="'+ path +'" class="list-group-item">https://widget.co <small class="text-muted">'+ filename +'</small></a>'
+          });
+          list.html(list_path);
+          $('[data-toggle="popover"]').popover({trigger: 'hover'})
+        }
+      });
+
+      selectPath();
+    };
+
+    var selectPath = function() {
+      $(document).on('click', '.list-group-item', function () {
+        $.ajax({
+          type: 'POST',
+          url: '/ajax/renders',
+          data: { public: $(this).data('href') },
+          success:function(data){
+            frame.html(data);
+          }
+        });
+      });
+    }
+
+    var reloadPath = function() {
+      $.ajax({
+        type: 'GET',
+        url: "/ajax/converts",
+        success:function(data){
+          init();
+        }
+      });
+    }
+
+    // Public API
+    return {
+        init: init,
+        reloadPath: reloadPath
+    };
+  })();
+
+
+  $( document ).ready( referallApp.init );
+</script>
+<% end %>
