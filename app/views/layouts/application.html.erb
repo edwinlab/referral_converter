@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ReferralConverter</title>
+    <%= csrf_meta_tags %>
+
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+      a {
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: none;
+      }
+      .container {
+        padding: 20px;
+      }
+
+      input[type=text]:hover, input[type=text]:focus, input[type=text]:active {
+        box-shadow: none;
+        border: 1px solid #ccc;
+      }
+
+      .input-inline-button {
+        display: inline-block;
+        position: absolute;
+        z-index: 4;
+        right: 0;
+        top: 0;
+        text-decoration: none;
+        padding: 0.5em;
+        color: #999;
+      }
+
+      .list-group-item.active {
+        background: #eee;
+        border-color: #eee;
+        color: #333;
+      }
+
+      .icon-plus:after {
+        content: "➕";
+      }
+
+      .typeahead {
+        position: relative;
+        margin-bottom: 0px;
+      }
+      .typeahead .input-group-addon:after {
+        content: ':';
+        display: inline;
+      }
+      .typeahead-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        margin-top: -2px;
+        -webkit-transition-delay: 0.75s;
+                transition-delay: 0.75s;
+        -webkit-transition: display 1s;
+        transition: display 1s;
+      }
+      .typeahead-dropdown:hover {
+        display: block;
+      }
+      .typeahead-dropdown > .list-group-item:first-child {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+      .typeahead-dropdown > .list-group-item:first-child:not(:last-child) {
+        border-radius: 0;
+      }
+      .typeahead-dropdown:focus {
+        z-index: 101;
+        display: block;
+      }
+      .typeahead-input {
+        z-index: 1;
+        position: relative;
+        padding: 20px 10px 20px 15px;
+      }
+      .typeahead-input.form-control {
+        border-top-right-radius: 6px !important;
+        border-bottom-right-radius: 6px !important;
+      }
+      .typeahead-input:focus {
+        z-index: 3;
+        padding-bottom: 20px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0 !important;
+      }
+      .typeahead-input:focus + .typeahead-dropdown {
+        z-index: 101;
+        display: block;
+        margin-top: 0px;
+      }
+      .reload-btn, .reload-btn:hover, .reload-btn:focus, .reload-btn:active {
+        background-color: #777;
+        color: #fff !important;
+        padding: 10px 20px 10px 20px;
+        border-radius: 4px;
+        margin-left: -15px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <%= yield %>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      $(function () {
+        $('[data-toggle="popover"]').popover({trigger: 'hover'})
+      })
+    </script>
+  </body>
+</html>
